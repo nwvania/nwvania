@@ -3,17 +3,54 @@
 import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import AnimatedSection from "@/components/sections/AnimatedSection";
-import { sectors } from "@/lib/data/sectors";
+import { sectors, operationalApps } from "@/lib/data/sectors";
 import { useLang } from "@/lib/i18n/LangContext";
 
-const opApps = [
-  "Business", "Partner", "Enterprise", "Gov", "Admin",
-  "Oversight", "Developer", "Mobility", "Studio", "Talent",
-];
+const missionStrings = {
+  en: {
+    label: "The Mission",
+    headline: "One platform. Every need. For everyone.",
+    body: "Nwvania is a unified digital ecosystem designed so that individuals access all services from a single place — and so that businesses, companies, institutions, and service providers operate through a clear, structured environment. Orders, content, mobility, operations, oversight, integrations, and talent acquisition — all within one project, one identity, one path.",
+    separation: "The principle of role separation",
+    separationBody: "There is exactly one app for the general public, and ten dedicated platforms for operations, production, management, institutions, partners, and the talent that builds with Nwvania. Each environment is purpose-built. There is no overlap.",
+  },
+  ar: {
+    label: "الرسالة",
+    headline: "منصة واحدة. كل احتياج. للجميع.",
+    body: "نوفانيا منظومة رقمية موحدة تجعل الفرد يستخدم الخدمات من مكان واحد، وتجعل الأعمال والشركات والجهات ومقدمي الخدمات يعملون من خلال بيئة تشغيل واضحة. إدارة الطلبات، المحتوى، التنقل، التشغيل، الرقابة، التكاملات، واستقطاب المواهب — ضمن مشروع واحد له هوية واحدة ومسار واحد.",
+    separation: "مبدأ فصل الأدوار",
+    separationBody: "هناك تطبيق واحد فقط للمستخدم العام، وعشرة تطبيقات مخصصة للتشغيل، الإنتاج، الإدارة، المؤسسات، الشركاء، والمواهب التي تعمل مع نوفانيا أو من خلاله. كل بيئة مبنية لغرضها. لا تداخل.",
+  },
+};
+
+const formulaStrings = {
+  en: {
+    label: "The Architecture",
+    headline: "The formula behind everything.",
+    items: [
+      { number: "1", title: "Consumer App", sub: "Nwvania", desc: "The only app for citizens and residents. 20 sectors. 220 services. Seamless." },
+      { number: "10", title: "Operational Platforms", sub: "The Professional Layer", desc: "Business · Partner · Enterprise · Gov · Admin · Oversight · Developer · Mobility · Studio · Talent" },
+      { number: "20", title: "Sectors", sub: "Inside Nwvania", desc: "Identity · Finance · Commerce · Food · Transport · Health · Education · Travel · Entertainment · Law · and more." },
+      { number: "220", title: "Applications", sub: "One unified experience", desc: "Every app is a purpose-built service. Every service solves a real need. All inside one ecosystem." },
+    ],
+  },
+  ar: {
+    label: "البنية",
+    headline: "المعادلة وراء كل شيء.",
+    items: [
+      { number: "1", title: "تطبيق المستهلك", sub: "نوفانيا", desc: "التطبيق الوحيد للمواطنين والمقيمين. 20 قطاعاً. 220 خدمة. تجربة سلسة." },
+      { number: "10", title: "منصات تشغيلية", sub: "الطبقة المهنية", desc: "أعمال · شريك · مؤسسات · حكومي · إدارة · رقابة · مطورون · مواصلات · ستوديو · مواهب" },
+      { number: "20", title: "قطاعاً", sub: "داخل نوفانيا", desc: "الهوية · المال · التجارة · الغذاء · النقل · الصحة · التعليم · السياحة · الترفيه · القانون · والمزيد." },
+      { number: "220", title: "تطبيقاً", sub: "تجربة موحدة", desc: "كل تطبيق خدمة متخصصة. كل خدمة تحل احتياجاً حقيقياً. كلها داخل منظومة واحدة." },
+    ],
+  },
+};
 
 export default function HomeContent() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const featuredSectors = sectors.slice(0, 6);
+  const mission = missionStrings[lang];
+  const formula = formulaStrings[lang];
 
   return (
     <>
@@ -76,23 +113,14 @@ export default function HomeContent() {
         </div>
       </section>
 
-      {/* WHAT IS NWVANIA */}
+      {/* MISSION */}
       <section className="py-24 md:py-32">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid items-center gap-16 md:grid-cols-2">
+          <div className="grid items-start gap-16 md:grid-cols-2">
             <AnimatedSection direction="left">
-              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#005CE6]">
-                {t.platform.architectureLabel}
-              </p>
-              <h2 className="mb-6 text-4xl font-bold leading-tight text-gray-900 md:text-5xl">
-                {t.platform.architectureTitle}
-              </h2>
-              <p className="mb-6 text-lg leading-relaxed text-gray-500">
-                {t.platform.architectureText1}
-              </p>
-              <p className="mb-8 text-lg leading-relaxed text-gray-500">
-                {t.platform.architectureText2}
-              </p>
+              <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#005CE6]">{mission.label}</p>
+              <h2 className="mb-8 text-4xl font-bold leading-tight text-gray-900 md:text-5xl">{mission.headline}</h2>
+              <p className="mb-8 text-lg leading-relaxed text-gray-500">{mission.body}</p>
               <Link
                 href="/about"
                 className="inline-flex items-center gap-2 text-sm font-medium text-[#005CE6] underline-offset-4 hover:underline"
@@ -101,21 +129,49 @@ export default function HomeContent() {
               </Link>
             </AnimatedSection>
             <AnimatedSection direction="right" delay={150}>
-              <div className="space-y-4">
-                <div className="rounded-2xl bg-[#005CE6] p-6 text-white">
-                  <div className="mb-2 text-xs font-semibold uppercase tracking-wider opacity-70">Layer 1</div>
-                  <div className="mb-1 text-xl font-bold">Nwvania</div>
-                  <div className="text-sm opacity-80">
-                    {t.home.sectorsSubtitle}
+              <div className="rounded-2xl border border-gray-100 bg-gray-50 p-8">
+                <div className="mb-6 text-xs font-semibold uppercase tracking-widest text-gray-400">{mission.separation}</div>
+                <p className="text-base leading-relaxed text-gray-600 mb-8">{mission.separationBody}</p>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-4 rounded-xl bg-[#005CE6] p-4 text-white">
+                    <div className="text-3xl font-black">1</div>
+                    <div>
+                      <div className="font-semibold">Nwvania</div>
+                      <div className="text-xs opacity-70">{lang === "ar" ? "للمستخدم العام — 20 قطاعاً — 220 تطبيقاً" : "For the general public — 20 sectors — 220 apps"}</div>
+                    </div>
                   </div>
-                </div>
-                <div className="rounded-2xl bg-gray-950 p-6 text-white">
-                  <div className="mb-2 text-xs font-semibold uppercase tracking-wider opacity-50">Layer 2</div>
-                  <div className="mb-1 text-xl font-bold">{t.home.platformsBadge}</div>
-                  <div className="text-sm opacity-70">{t.home.platformsSubtitle}</div>
+                  <div className="flex items-center gap-4 rounded-xl bg-gray-950 p-4 text-white">
+                    <div className="text-3xl font-black text-gray-400">10</div>
+                    <div>
+                      <div className="font-semibold">{lang === "ar" ? "المنصات التشغيلية" : "Operational Platforms"}</div>
+                      <div className="text-xs text-gray-500">{lang === "ar" ? "للشركاء، الأعمال، المؤسسات، الحكومات، المطورين، المواهب" : "For partners, businesses, enterprises, governments, developers, talent"}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </AnimatedSection>
+          </div>
+        </div>
+      </section>
+
+      {/* THE FORMULA */}
+      <section className="bg-gray-950 py-24 md:py-32 text-white">
+        <div className="mx-auto max-w-7xl px-6">
+          <AnimatedSection>
+            <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#005CE6]">{formula.label}</p>
+            <h2 className="mb-16 text-3xl font-bold md:text-5xl">{formula.headline}</h2>
+          </AnimatedSection>
+          <div className="grid gap-px bg-white/10 rounded-2xl overflow-hidden md:grid-cols-4">
+            {formula.items.map((item, i) => (
+              <AnimatedSection key={item.number} delay={i * 80}>
+                <div className="bg-gray-950 p-8 h-full flex flex-col">
+                  <div className="text-5xl font-black text-[#005CE6] mb-3 md:text-6xl">{item.number}</div>
+                  <div className="font-semibold text-white mb-1">{item.title}</div>
+                  <div className="text-xs text-gray-500 mb-4 uppercase tracking-wide">{item.sub}</div>
+                  <div className="text-sm text-gray-400 leading-relaxed flex-1">{item.desc}</div>
+                </div>
+              </AnimatedSection>
+            ))}
           </div>
         </div>
       </section>
@@ -126,9 +182,7 @@ export default function HomeContent() {
           <AnimatedSection>
             <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
               <div>
-                <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#005CE6]">
-                  {t.sectors.label}
-                </p>
+                <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#005CE6]">{t.sectors.label}</p>
                 <h2 className="text-3xl font-bold text-gray-900 md:text-5xl">
                   {t.sectors.headline1}
                   <br />
@@ -161,9 +215,7 @@ export default function HomeContent() {
                   </div>
                   <h3 className="mb-1.5 leading-snug font-semibold text-gray-900">{sector.name}</h3>
                   <p className="line-clamp-2 text-sm text-gray-500">{sector.description}</p>
-                  <div className="mt-4 text-xs font-medium text-gray-400">
-                    {sector.apps.length} {t.sectors.apps}
-                  </div>
+                  <div className="mt-4 text-xs font-medium text-gray-400">{sector.apps.length} {t.sectors.apps}</div>
                 </Link>
               </AnimatedSection>
             ))}
@@ -207,21 +259,21 @@ export default function HomeContent() {
       <section className="bg-gray-950 py-24 text-white md:py-32">
         <div className="mx-auto max-w-7xl px-6">
           <AnimatedSection>
-            <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#005CE6]">
-              {t.home.platformsBadge}
-            </p>
+            <p className="mb-4 text-xs font-semibold uppercase tracking-widest text-[#005CE6]">{t.home.platformsBadge}</p>
             <h2 className="mb-4 text-3xl font-bold md:text-5xl">
               {t.home.platformsTitle}
               <br />
               <span className="text-gray-500">{t.home.platformsSubtitle}</span>
             </h2>
           </AnimatedSection>
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-5 mt-14">
-            {opApps.map((name, i) => (
-              <AnimatedSection key={name} delay={i * 50}>
-                <div className="rounded-xl border border-white/10 p-4 transition-all duration-200 hover:border-[#005CE6]/60 hover:bg-white/5">
-                  <div className="mb-1.5 font-mono text-xs text-gray-600">{String(i + 1).padStart(2, "0")}</div>
-                  <div className="text-sm font-medium text-white">Nwvania {name}</div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 mt-14">
+            {operationalApps.map((app, i) => (
+              <AnimatedSection key={app.id} delay={i * 50}>
+                <div className="rounded-xl border border-white/10 p-5 transition-all duration-200 hover:border-white/20 hover:bg-white/5 h-full">
+                  <div className="mb-2 font-mono text-xs text-gray-600">{String(i + 1).padStart(2, "0")}</div>
+                  <div className="text-sm font-semibold text-white mb-1">{app.name}</div>
+                  <div className="text-xs mb-3" style={{ color: app.color }}>{app.targetAudience}</div>
+                  <div className="text-xs text-gray-500 leading-relaxed line-clamp-3">{app.description}</div>
                 </div>
               </AnimatedSection>
             ))}
@@ -248,10 +300,7 @@ export default function HomeContent() {
                   <h3 className="mb-3 text-2xl font-bold">{t.invest.headline}</h3>
                   <p className="text-sm leading-relaxed text-gray-500">{t.invest.subtitle}</p>
                 </div>
-                <Link
-                  href="/invest"
-                  className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-[#005CE6] underline-offset-4 hover:underline"
-                >
+                <Link href="/invest" className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-[#005CE6] underline-offset-4 hover:underline">
                   {t.common.learnMore} <ArrowRight size={16} />
                 </Link>
               </div>
@@ -263,10 +312,7 @@ export default function HomeContent() {
                   <h3 className="mb-3 text-2xl font-bold text-gray-900">{t.developers.headline1}</h3>
                   <p className="text-sm leading-relaxed text-gray-500">{t.developers.subtitle}</p>
                 </div>
-                <Link
-                  href="/developers"
-                  className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-[#005CE6] underline-offset-4 hover:underline"
-                >
+                <Link href="/developers" className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-[#005CE6] underline-offset-4 hover:underline">
                   {t.developers.ctaButton} <ArrowRight size={16} />
                 </Link>
               </div>
