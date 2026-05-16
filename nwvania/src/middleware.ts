@@ -7,15 +7,20 @@ export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
 
   // Set CSRF cookie if missing
+  // sameSite: "lax" instead of "strict" for Safari ITP compatibility
   if (!req.cookies.get(CSRF_COOKIE_NAME)) {
-    const token = await generateCsrfToken();
-    res.cookies.set(CSRF_COOKIE_NAME, token, {
-      httpOnly: false,
-      sameSite: "strict",
-      secure: !IS_DEV,
-      path: "/",
-      maxAge: 60 * 60,
-    });
+    try {
+      const token = await generateCsrfToken();
+      res.cookies.set(CSRF_COOKIE_NAME, token, {
+        httpOnly: false,   // client JS must read it
+        sameSite: "lax",  // "strict" breaks Safari navigation from external links
+        secure: !IS_DEV,
+        path: "/",
+        maxAge: 60 * 60,
+      });
+    } catch {
+      // Never block page load due to CSRF cookie failure
+    }
   }
 
   return res;

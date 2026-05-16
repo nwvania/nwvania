@@ -109,8 +109,13 @@ export default function CookieBanner() {
   const acceptBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("nwvania-cookie-consent") as Consent | null;
-    setConsent(stored);
+    try {
+      const stored = localStorage.getItem("nwvania-cookie-consent") as Consent | null;
+      setConsent(stored);
+    } catch {
+      // Safari Private Mode blocks localStorage — treat as no consent yet
+      setConsent(null);
+    }
     setMounted(true);
   }, []);
 
@@ -136,17 +141,17 @@ export default function CookieBanner() {
   }, [mounted, consent, handleFocusTrap]);
 
   function accept() {
-    localStorage.setItem("nwvania-cookie-consent", "accepted");
+    try { localStorage.setItem("nwvania-cookie-consent", "accepted"); } catch { /* Safari Private */ }
     setConsent("accepted");
   }
 
   function decline() {
-    localStorage.setItem("nwvania-cookie-consent", "declined");
+    try { localStorage.setItem("nwvania-cookie-consent", "declined"); } catch { /* Safari Private */ }
     setConsent("declined");
   }
 
   function reset() {
-    localStorage.removeItem("nwvania-cookie-consent");
+    try { localStorage.removeItem("nwvania-cookie-consent"); } catch { /* Safari Private */ }
     setConsent(null);
   }
 

@@ -25,15 +25,17 @@ export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("en");
 
   useEffect(() => {
-    const stored = localStorage.getItem("nwvania-lang") as Lang | null;
-    if (stored === "ar" || stored === "en") {
-      applyLang(stored);
-      setLangState(stored);
-    }
+    try {
+      const stored = localStorage.getItem("nwvania-lang") as Lang | null;
+      if (stored === "ar" || stored === "en") {
+        applyLang(stored);
+        setLangState(stored);
+      }
+    } catch { /* Safari Private Mode */ }
   }, []);
 
   function setLang(l: Lang) {
-    localStorage.setItem("nwvania-lang", l);
+    try { localStorage.setItem("nwvania-lang", l); } catch { /* Safari Private Mode */ }
     applyLang(l);
     setLangState(l);
   }
