@@ -5,9 +5,6 @@ import { rateLimit, getIP } from "@/lib/rateLimit";
 import { logger } from "@/lib/logger";
 import { validateOrigin } from "@/lib/csrf";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-const TO = process.env.CONTACT_EMAIL!;
-
 const EarlyAccessSchema = z.object({
   fullName: z.string().min(2).max(100).trim(),
   email: z.string().email().max(254).trim().toLowerCase(),
@@ -18,6 +15,8 @@ const EarlyAccessSchema = z.object({
 });
 
 export async function POST(req: Request) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const TO = process.env.CONTACT_EMAIL!;
   const ip = getIP(req);
   const start = Date.now();
 
