@@ -24,6 +24,8 @@ const routes: Array<{ url: string; priority: number; freq: Freq }> = [
   { url: "/team",         priority: 0.6, freq: "monthly" },
   { url: "/contact",      priority: 0.6, freq: "yearly" },
   { url: "/legal",        priority: 0.5, freq: "yearly" },
+  { url: "/privacy",      priority: 0.5, freq: "yearly" },
+  { url: "/terms",        priority: 0.5, freq: "yearly" },
   { url: "/cookies",      priority: 0.4, freq: "yearly" },
 ];
 

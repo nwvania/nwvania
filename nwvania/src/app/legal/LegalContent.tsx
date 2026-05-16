@@ -195,6 +195,7 @@ export default function LegalContent() {
 
           {/* Privacy Policy */}
           <AnimatedSection>
+            <div id="privacy" className="scroll-mt-28">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">{t.legal.privacyLabel}</h2>
             <div className="prose prose-gray max-w-none text-sm leading-relaxed space-y-4 text-gray-600">
               <p>{privacy.intro}</p>
@@ -222,12 +223,14 @@ export default function LegalContent() {
                 .
               </p>
             </div>
+            </div>
           </AnimatedSection>
 
           <div className="border-t border-gray-100" />
 
           {/* Terms of Service */}
           <AnimatedSection>
+            <div id="terms" className="scroll-mt-28">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">{t.legal.termsLabel}</h2>
             <div className="prose prose-gray max-w-none text-sm leading-relaxed space-y-4 text-gray-600">
               <p>{terms.intro}</p>
@@ -258,6 +261,7 @@ export default function LegalContent() {
                 </a>
                 .
               </p>
+            </div>
             </div>
           </AnimatedSection>
         </div>

@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Forbidden." }, { status: 403 });
   }
 
-  const { allowed, retryAfter } = rateLimit(ip);
+  const { allowed, retryAfter } = await rateLimit(ip);
   if (!allowed) {
     logger.warn("contact: rate limited", { ip });
     return NextResponse.json(
