@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { rateLimit, getIP } from "@/lib/rateLimit";
 import { logger } from "@/lib/logger";
-import { validateOrigin } from "@/lib/csrf";
+import { validateOrigin, verifyCsrfToken, CSRF_COOKIE_NAME, CSRF_HEADER_NAME } from "@/lib/csrf";
 
 
 const ContactSchema = z.object({
@@ -24,6 +24,15 @@ export async function POST(req: Request) {
   if (!validateOrigin(req)) {
     logger.warn("contact: invalid origin", { ip, origin: req.headers.get("origin") });
     return NextResponse.json({ error: "Forbidden." }, { status: 403 });
+  }
+
+  const csrfHeader = req.headers.get(CSRF_HEADER_NAME);
+  const csrfCookie = req.headers.get("cookie")
+    ?.split(";").find((c) => c.trim().startsWith(`${CSRF_COOKIE_NAME}=`))
+    ?.split("=").slice(1).join("=").trim() ?? null;
+  if (!verifyCsrfToken(csrfHeader) || csrfHeader !== csrfCookie) {
+    logger.warn("contact: invalid csrf token", { ip });
+    return NextResponse.json({ error: "Invalid request." }, { status: 403 });
   }
 
   const { allowed, retryAfter } = await rateLimit(ip);
