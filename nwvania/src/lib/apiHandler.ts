@@ -24,7 +24,7 @@ export function createApiHandler<T>({ tag, schema, handle }: HandlerOptions<T>) 
     const csrfCookie = req.headers.get("cookie")
       ?.split(";").find((c) => c.trim().startsWith(`${CSRF_COOKIE_NAME}=`))
       ?.split("=").slice(1).join("=").trim() ?? null;
-    if (!verifyCsrfToken(csrfHeader) || csrfHeader !== csrfCookie) {
+    if (!(await verifyCsrfToken(csrfHeader)) || csrfHeader !== csrfCookie) {
       logger.warn(`${tag}: invalid csrf token`, { ip });
       return NextResponse.json({ error: "Invalid request." }, { status: 403 });
     }
